@@ -87,6 +87,10 @@ namespace UnityStandardAssets.Characters.FirstPerson
                     timertxt.GetComponent<Text>().text = "Timer : 0 ";
                 }
             }
+            if(score >= 60)
+            {
+                SceneManager.LoadScene(1);
+            }
 
             RotateView();
             // the jump state needs to read here to make sure it is not missed
