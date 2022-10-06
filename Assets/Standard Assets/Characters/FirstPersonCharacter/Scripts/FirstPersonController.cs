@@ -3,6 +3,8 @@ using UnityEngine;
 using UnityStandardAssets.CrossPlatformInput;
 using UnityStandardAssets.Utility;
 using Random = UnityEngine.Random;
+using UnityEngine.SceneManagement;
+using UnityEngine.UI;
 
 namespace UnityStandardAssets.Characters.FirstPerson
 {
@@ -41,6 +43,9 @@ namespace UnityStandardAssets.Characters.FirstPerson
         private float m_NextStep;
         private bool m_Jumping;
         private AudioSource m_AudioSource;
+        private int score;
+
+        public GameObject scoretxt;
 
         // Use this for initialization
         private void Start()
@@ -259,7 +264,14 @@ namespace UnityStandardAssets.Characters.FirstPerson
         {
             if(other.gameObject.tag.Equals("Coin"))
             {
+                score+=10;
                 Destroy(other.gameObject);
+                scoretxt.GetComponent<Text>().text = "Coins Collected : " + score;
+            }
+            if(other.gameObject.tag.Equals("Water"))
+            {
+                m_MouseLook.UpdateCursorLock();
+                SceneManager.LoadScene(2);
             }
         }
     }
