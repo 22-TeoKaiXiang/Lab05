@@ -48,8 +48,10 @@ namespace UnityStandardAssets.Characters.FirstPerson
         public float timeremaining;
         private bool isrunning = false;
         
+        public ParticleSystem particlesystem;
         public GameObject scoretxt;
         public GameObject timertxt;
+        public AudioClip coinpickup;
 
         
 
@@ -66,7 +68,7 @@ namespace UnityStandardAssets.Characters.FirstPerson
             m_Jumping = false;
             m_AudioSource = GetComponent<AudioSource>();
 			m_MouseLook.Init(transform , m_Camera.transform);
-            isrunning = true;
+            isrunning = true;           
         }
 
 
@@ -87,9 +89,13 @@ namespace UnityStandardAssets.Characters.FirstPerson
                     timertxt.GetComponent<Text>().text = "Timer : 0 ";
                 }
             }
-            if(score >= 60)
+            if(score >= 90)
             {
                 SceneManager.LoadScene(1);
+            }
+            if (timeremaining <= 0)
+            {
+                SceneManager.LoadScene(2);
             }
 
             RotateView();
@@ -286,19 +292,29 @@ namespace UnityStandardAssets.Characters.FirstPerson
             }
             body.AddForceAtPosition(m_CharacterController.velocity*0.1f, hit.point, ForceMode.Impulse);
         }
+
+       
         private void OnTriggerEnter(Collider other)
         {
             if(other.gameObject.tag.Equals("Coin"))
             {
                 score+=10;
-                Destroy(other.gameObject);
+                m_AudioSource.PlayOneShot(coinpickup);
+                Destroy(other.gameObject);               
                 scoretxt.GetComponent<Text>().text = "Coins Collected : " + score;
+                particlesystem.Play();
+                ParticleTrigger();
             }
             if(other.gameObject.tag.Equals("Water"))
             {
-                m_MouseLook.UpdateCursorLock();
+                
                 SceneManager.LoadScene(2);
             }
         }
+        private void ParticleTrigger()
+        {
+            Instantiate(particlesystem, transform.position, Quaternion.identity);
+        }
+
     }
 }

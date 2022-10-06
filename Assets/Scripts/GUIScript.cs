@@ -8,7 +8,8 @@ public class GUIScript : MonoBehaviour
     // Start is called before the first frame update
     void Start()
     {
-        
+        Cursor.visible = true;
+        Cursor.lockState = CursorLockMode.None;
     }
 
     // Update is called once per frame
@@ -17,6 +18,11 @@ public class GUIScript : MonoBehaviour
      if(Input.GetKeyDown(KeyCode.R))
         {
             SceneManager.LoadScene(0);
+        }
+
+        if (Input.GetKeyDown(KeyCode.Escape))
+        {
+            Application.Quit();
         }
     }
     public void OnRestart()
